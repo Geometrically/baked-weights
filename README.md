@@ -18,8 +18,7 @@ The chip does the heavy part of the model, not all of it. A microcontroller on t
 board turns a character into 80 bytes of numbers and sends them to the chip. The chip runs
 both of its layers, reads its weights from its own ROM, and sends 40 bytes back. The
 microcontroller turns those bytes into the next character. See
-[docs/info.md](docs/info.md) for the pin protocol, the full list of numbers, and the test
-steps.
+[docs/info.md](docs/info.md) for the pin protocol and the full list of numbers.
 
 ## Clock
 
