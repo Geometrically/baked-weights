@@ -1,0 +1,36 @@
+{
+ "format": "tnt ROM macro build manifest v1",
+ "config": "l2e40mlp2",
+ "banks": 1,
+ "shape": "4096x8",
+ "macros": 1,
+ "byte_mapping": "one macro per byte bank",
+ "image_dir": "gen-l2e40mlp2",
+ "pad_byte": "0x79",
+ "macro": {
+  "template": "rom4096x8.tmpl.json",
+  "words": 4096,
+  "width": 8,
+  "cut": 1,
+  "source_cell": "rom_tvbgone_32k"
+ },
+ "padding_words": 0,
+ "overflow": true,
+ "overflow_note": "words 0..4095 are in the macro; words 4096.. are carried by a synthesised overflow ROM (generated Verilog). The RTL wrapper owns pad semantics outside the real entries.",
+ "files": [
+  {
+   "bank": 0,
+   "cell": "wrom_b0",
+   "nibble": null,
+   "bits": "7:0",
+   "image": "wrom_b0.hex",
+   "image_source": "../gen-l2e40mlp2/wrom_b0.hex",
+   "image_sha256": "f0bd77bbf9f7f7d1e4c15ffe5b74425f4f0519850faebe9e1a86a712e4107e7c",
+   "image_words": 4480,
+   "macro_words": 4096,
+   "overflow_words": 384,
+   "gds_sha256": "c06380528c272b8fa08519234de67058592d6af0eac02ee8896463b56693857b"
+  }
+ ],
+ "stray_files": []
+}

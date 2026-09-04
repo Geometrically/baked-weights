@@ -1,0 +1,176 @@
+{
+  "compiled": [
+    {
+      "file": "tt_um_baked_weights.v",
+      "origin": "src/tt_um_baked_weights.v",
+      "sha256": "4adc13512199a3e65c1b6d86e54f41b8edb51d0e756f8318867288a0d182b6ea"
+    },
+    {
+      "file": "chip_core.v",
+      "origin": "src/chip_core.v",
+      "sha256": "d9f57433b76f49d0d06a77aaf1d9a49790e7ef7cf813e52e5cee103da0fd5de9"
+    },
+    {
+      "file": "wrom_macro_ovf.v",
+      "origin": "src/wrom_macro_ovf.v",
+      "sha256": "984d19a9af0c518573968e80728fc3a8455b2c535918ebc345d896cc9c24a3a8"
+    },
+    {
+      "file": "sequencer.v",
+      "origin": "src/sequencer.v",
+      "sha256": "1e6a92218416583c67d59e1a1bc11fa0662a5aef060c55b876f05c308fe9dbcc"
+    },
+    {
+      "file": "tmac.v",
+      "origin": "src/tmac.v",
+      "sha256": "67e4fba2d6d9ed23b4ff056a430f53a31da7d7c61a4373564738e7e584d0449a"
+    },
+    {
+      "file": "trit_dec5.v",
+      "origin": "src/trit_dec5.v",
+      "sha256": "9713e9c2158a0c0cb9491e3e4888b0988808f6403292fc130693d153268da325"
+    },
+    {
+      "file": "rnd_shift.v",
+      "origin": "src/rnd_shift.v",
+      "sha256": "1c0e4c36ee3465e458dde768fefb3bbc5c599bd25f92cafc2fa457fd27ce3ece"
+    },
+    {
+      "file": "mingru.v",
+      "origin": "src/mingru.v",
+      "sha256": "cc9b795e85dbc462a0990cdd246b6cea3db1e83013b12fc288803636ef544696"
+    },
+    {
+      "file": "rmsnorm.v",
+      "origin": "src/rmsnorm.v",
+      "sha256": "590305e7daf7abe93117c197f8324a2b1ba5976f13418eaf429f8d359dee7c1d"
+    },
+    {
+      "file": "resid_add.v",
+      "origin": "src/resid_add.v",
+      "sha256": "88c2d6a1318e34f20359f787b4ef0e3dad7ee71977e803d22949583aee55c8b1"
+    },
+    {
+      "file": "sqrelu.v",
+      "origin": "src/sqrelu.v",
+      "sha256": "9eda542f3e047cddd9dc6cf65ab97e10ca69d5a02563b9fe2ff906f894df25e3"
+    },
+    {
+      "file": "sigmoid_lut.v",
+      "origin": "src/sigmoid_lut.v",
+      "sha256": "bb3a54ff86658081df30c85180298e4bafc03a738889bfe64cc5a19c17d56f1a"
+    },
+    {
+      "file": "rsqrt_lut.v",
+      "origin": "src/rsqrt_lut.v",
+      "sha256": "3b0efd75d2c118f2b2df55c7425b91a21e8c7bfc657884b240a5fa4ff354c0a1"
+    },
+    {
+      "file": "norm_const.v",
+      "origin": "src/norm_const.v",
+      "sha256": "9837fc876815d282bf678bfc2d1349af0cea3818bd1eb037d37a843705261560"
+    },
+    {
+      "file": "norm_sh.v",
+      "origin": "src/norm_sh.v",
+      "sha256": "5dece15aa7fac2bc3a31b9f8dd91f1ba26efce543346b18299306784a8ccd006"
+    },
+    {
+      "file": "site_const.v",
+      "origin": "src/site_const.v",
+      "sha256": "b9093e73220ed644f7a354562a2e2ef16a8520adb0e7a13b123e3031b0f88e1a"
+    },
+    {
+      "file": "mat_const.v",
+      "origin": "src/mat_const.v",
+      "sha256": "3b54a2e6f890244e0ba5756e628088ddf317425dbf88dc953454a7a207bfb8fe"
+    },
+    {
+      "file": "gate_const.v",
+      "origin": "src/gate_const.v",
+      "sha256": "3b545c6ecad679ed01dac80bea6926b0ccb9e7cb1fcf143730e0e3b679c14494"
+    },
+    {
+      "file": "wrom_ovf.v",
+      "origin": "src/wrom_ovf.v",
+      "sha256": "2e89cb7e22296878cc81ce24ca1cceea5d793e7c9db1441fe1333d23743faa17"
+    }
+  ],
+  "supporting": [
+    {
+      "file": "wrom_b0.vh",
+      "origin": "src/wrom_b0.vh",
+      "sha256": "ff39a9cf5f2c6405825b99703053e99e24e361ca8711981c7f71351a48991b82"
+    }
+  ],
+  "references": [
+    {
+      "file": "wrom_b0.ff.lib",
+      "origin": "macro/wrom_b0.ff.lib",
+      "sha256": "9bf284186378a86331e5e664745fd7e689ab8ed29f23d89bb35504cb9c9fec55"
+    },
+    {
+      "file": "wrom_b0.gds",
+      "origin": "macro/wrom_b0.gds",
+      "sha256": "c06380528c272b8fa08519234de67058592d6af0eac02ee8896463b56693857b"
+    },
+    {
+      "file": "wrom_b0.lef",
+      "origin": "macro/wrom_b0.lef",
+      "sha256": "e2f4f2b6a5a94b42768cb8a37f901d3a71e9ce24b230c846d54404a0bfcf12b6"
+    },
+    {
+      "file": "wrom_b0.ss.lib",
+      "origin": "macro/wrom_b0.ss.lib",
+      "sha256": "f4cf1883533ff0066620e4d56f2ce32c8f07a56f3d2a5b21e713d0c12738bbcc"
+    },
+    {
+      "file": "wrom_b0.tt.lib",
+      "origin": "macro/wrom_b0.tt.lib",
+      "sha256": "40e4ec76cc875898b1e6e91d863fdd32e072f08d21c432267b255bc2dd4b8409"
+    },
+    {
+      "file": "wrom_b0.v",
+      "origin": "macro/wrom_b0.v",
+      "sha256": "b7f2c8b0df806942a962cb7ec303dd26867fdf5d7cd4028bf3e65f1cc9efae62"
+    }
+  ],
+  "missing": [],
+  "macro": {
+    "manifest": "macro/manifest.json",
+    "format": "tnt ROM macro build manifest v1",
+    "config": "l2e40mlp2",
+    "banks": 1,
+    "shape": "4096x8",
+    "macros": 1,
+    "byte_mapping": "one macro per byte bank",
+    "image_dir": "gen-l2e40mlp2",
+    "pad_byte": "0x79",
+    "macro": {
+      "template": "rom4096x8.tmpl.json",
+      "words": 4096,
+      "width": 8,
+      "cut": 1,
+      "source_cell": "rom_tvbgone_32k"
+    },
+    "padding_words": 0,
+    "overflow": true,
+    "overflow_note": "words 0..4095 are in the macro; words 4096.. are carried by a synthesised overflow ROM (generated Verilog). The RTL wrapper owns pad semantics outside the real entries.",
+    "files": [
+      {
+        "bank": 0,
+        "cell": "wrom_b0",
+        "nibble": null,
+        "bits": "7:0",
+        "image": "wrom_b0.hex",
+        "image_source": "../gen-l2e40mlp2/wrom_b0.hex",
+        "image_sha256": "f0bd77bbf9f7f7d1e4c15ffe5b74425f4f0519850faebe9e1a86a712e4107e7c",
+        "image_words": 4480,
+        "macro_words": 4096,
+        "overflow_words": 384,
+        "gds_sha256": "c06380528c272b8fa08519234de67058592d6af0eac02ee8896463b56693857b"
+      }
+    ],
+    "stray_files": []
+  }
+}

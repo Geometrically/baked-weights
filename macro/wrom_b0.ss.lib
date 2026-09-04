@@ -1,0 +1,215 @@
+/* wrom_b0 - ss_100C_1v60
+ *
+ * MEASURED, not a placeholder.  address -> q characterised in ngspice on a
+ * parasitic-extracted layout.
+ *
+ * Measured on the shipping 4096x8 macro (wrom_b0, 32728 devices), parasitic-
+ * extracted with full extracted capacitance (magic ext2spice cthresh 0; no
+ * capacitor was dropped). Worst address (far column 255, far row 15 of a bit
+ * plane), address held exactly one 20 ns cycle, ngspice with the sky130 ss
+ * models at 100 C / 1.6 V. TABLE POINTS: 2 fF is SIMULATED. 15 fF is DERIVED,
+ * not simulated, as t(2 fF) + 15.2 ps/fF * 13 fF - the 512x8 output-load
+ * slope, measured at both loads on that shape; external load acts on the
+ * shared q output stage and does not change the array delay, which is what the
+ * 4096x8 run measures directly. Only one load was simulated on this shape
+ * because each corner is a ~50 min, 14.6 GB run. SPICE models verified byte-
+ * identical between PDK builds 8afc8346 and 0536d02d (ngspice tree sha256
+ * f6995e71040b46f3735ff3ff9ac151858a1bd1379219d48d2aae5a85b31a1f04). One
+ * measurement covers every wrom_b* bank: the bitline load that differs between
+ * banks is the drain diffusion of the programmed cells, and every shipped bank
+ * sits in a 48.1-49.1 % one-density band, so the transfer error is under 1 %
+ * of the pull-down count against a 1.9x tt-to-ss corner spread. OUTPUT
+ * TRANSITION (10-90 %, the threshold declared below): measured on ss at 2 fF,
+ * on the functional bit only (the address pair toggles one stored bit; the
+ * others are static and merely glitch, and taking the worst of all eight once
+ * reported a static bit's glitch recovery as the rise slew): fall 0.6676 ns /
+ * rise 0.1333 ns, extracted by scripts/tntrom_slew.py from the saved vectors
+ * against the saved toggling input vector, resolved to about +/-1 ps (fall)
+ * and +/-5 ps (rise) by the 25 ps transient step. This corner has its own
+ * measured waveform. The 15 fF entry is DERIVED from it by d(slew) = 3.19 *
+ * d(delay), the 2.2RC / 0.69RC identity of a single-pole output stage; no
+ * cross-corner scaling enters this corner's table. This replaces a synthetic
+ * 35 %-of-delay placeholder that was not a measurement and that exceeded the
+ * 1.5 ns max_transition this library declares. INPUT TRANSITION: the tables
+ * have no input-transition index because the 4096x8 was simulated at exactly
+ * one input ramp (0.1 ns), so a 2-D table would hold one simulated cell and
+ * seven doubly-derived ones. Instead every delay entry carries a stated margin
+ * of 210 ps, 4096x8-MEASURED on this very array. It is the worst fall-delay
+ * adder over input ramps 0.05-1 ns relative to the 0.1 ns reference. Output
+ * transition carries no margin: it moved at most 7 ps, under 2 %, over the
+ * same 20x ramp range. Measured 2026-09-03 by gen-macro/.timing/slew_runs.sh:
+ * delay(tr=1.0 ns) = 4.525 ns against delay(tr=0.1 ns) = 4.318 ns at 2 fF, an
+ * adder of 207 ps, rounded up to 10 ps. It REPLACES the 143 ps that was
+ * carried over from the 512x8 and asserted to transfer - the assertion was
+ * optimistic by 64 ps, because the 4096x8 wordline node the addr input stage
+ * drives carries 132 gates and about 22 fF, roughly 8x the 512x8 load, and
+ * input-slew sensitivity depends on how long that stage sits in its transition
+ * region. ADDR PIN CAPACITANCE: 6.664 fF, MEASURED. Every addr pin gates two
+ * parallel inverters (pfet w=1.5, nfet w=0.75, l=0.15, x2) driving a wordline
+ * node of 132 nfet gates plus wire; scripts/tntrom_pincap.py reconstructs each
+ * of the twelve pins from the extraction - all twelve, because they differ in
+ * wire load and wordline load - drives the NEIGHBOURING addr pins with the
+ * opposite edge so the addr-to-addr coupling contributes its worst-case 2x
+ * Miller value rather than being grounded, and integrates the pin current: C =
+ * Q/VDD. Quoted is the worst pin (addr[3]) at a 0.1 ns input ramp, the range
+ * STA presents; over 0.1-2 ns ramps the worst pin moves 0.000 fF. Replaces the
+ * shipped 5.0 fF round number.
+ *
+ * The arc is a lookup on output load; input slew is not swept (the address
+ * pins drive a decoder whose delay is dominated by the wordline, not by the
+ * input edge).  Wire resistance is not in the extraction - capacitance is -
+ * which is second order here: a ~130 um met2 bitline is tens of ohms against a
+ * pull-up in the kohm range.
+ */
+library (wrom_b0_ss_100C_1v60) {
+  delay_model : "table_lookup";
+  library_features : "report_delay_calculation";
+  time_unit : "1ns";
+  voltage_unit : "1V";
+  current_unit : "1mA";
+  pulling_resistance_unit : "1kohm";
+  leakage_power_unit : "1nW";
+  capacitive_load_unit (1,fF);
+  input_threshold_pct_rise : 50;
+  input_threshold_pct_fall : 50;
+  output_threshold_pct_rise : 50;
+  output_threshold_pct_fall : 50;
+  slew_lower_threshold_pct_rise : 10;
+  slew_lower_threshold_pct_fall : 10;
+  slew_upper_threshold_pct_rise : 90;
+  slew_upper_threshold_pct_fall : 90;
+  slew_derate_from_library : 1.0;
+  /* Leakage is UNCHARACTERISED, not zero.  No DC measurement of this macro
+   * has been made: a 4096x8 .op is a 32,728-device solve and was not run.
+   * 0.0 is the Liberty default and is what the shipped .lib also carries; it
+   * means "not supplied", and any power number a flow reports for this macro
+   * is that default, not a measurement.  Do not quote macro leakage from
+   * this file. */
+  default_cell_leakage_power : 0.0;
+  default_leakage_power_density : 0.0;
+  default_input_pin_cap : 1.0;
+  default_inout_pin_cap : 1.0;
+  default_output_pin_cap : 0.0;
+  default_max_transition : 1.5;
+  default_fanout_load : 1.0;
+  default_max_fanout : 4.0;
+  default_connection_class : "universal";
+  nom_process : 1.0;
+  nom_temperature : 100.0;
+  nom_voltage : 1.60;
+  operating_conditions (ss_100C_1v60) {
+    process : 1.0;
+    temperature : 100.0;
+    voltage : 1.60;
+    tree_type : "balanced_tree";
+  }
+  default_operating_conditions : ss_100C_1v60;
+  lu_table_template (rom_load) {
+    variable_1 : total_output_net_capacitance;
+    index_1 ("2.0000, 15.0000");
+  }
+
+  type (addr_bus) {
+    base_type : "array";
+    data_type : "bit";
+    bit_width : 12;
+    bit_from : 11;
+    bit_to : 0;
+    downto : true;
+  }
+
+  type (data_bus) {
+    base_type : "array";
+    data_type : "bit";
+    bit_width : 8;
+    bit_from : 7;
+    bit_to : 0;
+    downto : true;
+  }
+  cell (wrom_b0) {
+    dont_touch : true;
+    dont_use : true;
+    map_only : true;
+    interface_timing : true;
+    area : 16272.3;   /* LEF SIZE 144.9 x 112.3 um, read from wrom_b0.lef at generation time */
+    memory () {
+      type : "rom";
+      address_width : 12;
+      word_width : 8;
+    }
+    pg_pin (VPWR) {
+      voltage_name : "VPWR";
+      pg_type : "primary_power";
+    }
+    pg_pin (VGND) {
+      voltage_name : "VGND";
+      pg_type : "primary_ground";
+    }
+    /* Pin directions are NOT asserted by this generator.  addr/q direction,
+     * bus_type, and the addr_bus/data_bus templates are copied verbatim from
+     * the shipped rom_tvbgone_32k.lib, which is the macro author's own view of his
+     * cell; the extracted netlist agrees - every addr[k] reaches only
+     * transistor GATES (two inverters each, no source or drain), and every
+     * q[k] is driven by a pull-up/pull-down pair and gates nothing - so
+     * input/output is confirmed by the layout, not assumed from the name.
+     * related_power_pin / related_ground_pin name the rails the macro's own
+     * .lef declares as its power pins; without them a flow has to guess which
+     * supply a signal belongs to on a multi-rail cell. */
+    bus (addr) {
+      bus_type : "addr_bus";
+      direction : "input";
+      related_power_pin : "VPWR";
+      related_ground_pin : "VGND";
+      capacitance : 6.664;   /* MEASURED - see the header for method and per-pin sweep */
+    }
+    bus (q) {
+      bus_type : "data_bus";
+      direction : "output";
+      related_power_pin : "VPWR";
+      related_ground_pin : "VGND";
+      /* max_capacitance is the last characterised load, NOT an extrapolation.
+       * It was max(load)*2 = 30 fF, which contradicted default_max_transition
+       * above: at 30 fF the ss fall transition extrapolates past the 1.5 ns
+       * this same file declares legal.
+       * Extending this corner's own fall_transition table (0.6676 ns at 2 fF,
+       * 1.2976 ns at 15 fF) - the first of the two edges to get there - to
+       * slew(C) = 1.5 ns puts the linearly extrapolated ceiling at 19.2 fF, so
+       * the table's own last index is both inside the transition limit and
+       * inside the characterised range. */
+      max_capacitance : 15.0;
+      memory_read () {
+        address : "addr";
+      }
+      /* PER-ENTRY PROVENANCE - what each number below actually is.
+       *        2 fF  cell_rise/cell_fall 4.5280 ns : SIMULATED at this corner and load, + 210 ps input-transition margin (4096x8-measured on this array)
+       *              rise_transition 0.1333 ns : MEASURED on this corner's own waveform at 2 fF (reference: saved toggling input vector)
+       *              fall_transition 0.6676 ns : MEASURED on this corner's own waveform at 2 fF (reference: saved toggling input vector)
+       *       15 fF  cell_rise/cell_fall 4.7256 ns : DERIVED  t(2 fF) + slope_512x8 * dC, + 210 ps input-transition margin (4096x8-measured on this array)
+       *              rise_transition 0.7634 ns : load step from 2 fF: +3.19 x d(delay) = +0.6300 ns
+       *              fall_transition 1.2976 ns : load step from 2 fF: +3.19 x d(delay) = +0.6300 ns
+       * cell_rise carries the FALL delay at every load: the measured rise
+       *   arc is ~7x faster, so this is deliberate pessimism, not a measurement.
+       * The margin is NOT an input-transition index. There is none: the
+       *   4096x8 was simulated at one input ramp. See the header.
+       * rise/fall_transition entries carry NO margin: measured input-slew flat.
+       */
+      timing () {
+        related_bus_pins : "addr";
+        timing_type : "combinational";
+        timing_sense : "non_unate";
+        cell_rise (rom_load) {
+          values ("4.5280, 4.7256");
+        }
+        cell_fall (rom_load) {
+          values ("4.5280, 4.7256");
+        }
+        rise_transition (rom_load) {
+          values ("0.1333, 0.7634");
+        }
+        fall_transition (rom_load) {
+          values ("0.6676, 1.2976");
+        }
+      }
+    }
+  }
+}

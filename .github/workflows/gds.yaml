@@ -1,0 +1,98 @@
+# Tiny Tapeout submission workflow — ttsky26c, path A' (docs/submission.md 3).
+#
+# We harden locally with LibreLane and commit tt_submission/, so there is no
+# build job here. tt-gds-action/precheck, /gl_test and /viewer each begin with
+# `download-artifact name: tt_submission` and do not care who produced it, which
+# is what makes this work.
+#
+# Regenerate tt_submission/ with:
+#   the packaging step of the hardening flow (writes tt_submission/)
+name: gds
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  gds:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      # Git holds the OASIS, not the GDS: a full-chip GDS is ~145 MB against
+      # GitHub's 100 MB hard file limit, and the same layout is ~1.2 MB as
+      # OASIS. Precheck globs tt_submission/*.gds*, so a real .gds has to exist
+      # in the artifact — it just does not have to exist in the repository.
+      - name: Install KLayout
+        run: pip install klayout==0.30.8
+
+      - name: Convert OASIS back to GDS
+        run: |
+          python - <<'EOF'
+          import glob
+          import klayout.db as pya
+          (oas,) = glob.glob("tt_submission/*.oas")
+          gds = oas.removesuffix(".oas") + ".gds"
+          layout = pya.Layout()
+          layout.read(oas)
+          layout.write(gds)
+          print(f"{oas} -> {gds}")
+          EOF
+
+      - name: Publish tt_submission artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: tt_submission
+          path: |
+            src/*
+            docs/*
+            tt_submission/*
+            info.yaml
+            LICENSE
+
+      # The viewer job downloads a `gds_render` artifact that only TT's own build
+      # job would otherwise produce, so republish the committed PNG here.
+      - name: Publish gds_render artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: gds_render
+          path: gds_render.png
+
+  precheck:
+    needs: gds
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Run Tiny Tapeout Precheck
+        uses: TinyTapeout/tt-gds-action/precheck@ttsky26c
+        with:
+          # The action defaults tools-ref to `main`, which moves. Pin it to the
+          # same commit the local precheck runs, or a local pass says
+          # nothing about CI. Bump both together.
+          tools-ref: "01d5d2814fa9dd61e9d211e0b235a4a592a9316a"
+
+  # Optional. Needs test/ to hold a cocotb bench that passes under GATES=yes.
+  # Delete this job if test/ is still the placeholder smoke test.
+  gl_test:
+    needs: gds
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: GL test
+        uses: TinyTapeout/tt-gds-action/gl_test@ttsky26c
+
+  # Needs repository Settings -> Pages -> Source = "GitHub Actions".
+  viewer:
+    needs: gds
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - uses: TinyTapeout/tt-gds-action/viewer@ttsky26c

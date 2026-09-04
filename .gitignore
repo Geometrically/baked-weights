@@ -1,0 +1,19 @@
+
+.DS_Store
+flow/
+flow/runs/
+*.fst
+*.fst.hier
+.idea
+# LibreLane run directories
+__pycache__/
+# simulation output
+src/config_merged.json
+src/user_config.json
+test/gate_level_netlist.v
+test/results.xml
+test/sim_build/
+# tt-support-tools scratch
+*.vcd
+verify/
+*.vvp

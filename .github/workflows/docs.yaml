@@ -1,0 +1,26 @@
+# Validates info.yaml and docs/info.md, and builds the TT datasheet PDF.
+#
+# tt_tool.py constructs a Project on every invocation, and that constructor runs
+# check_sources(), which requires every info.yaml `source_files` entry to exist
+# under ./src. So this workflow needs ./src populated even though it never
+# hardens anything. See docs/submission.md 5.4 item 2.
+name: docs
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  docs:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Build docs
+        uses: TinyTapeout/tt-gds-action/docs@ttsky26c
+        with:
+          # Same pin as gds.yaml and the local precheck.
+          tools-ref: "01d5d2814fa9dd61e9d211e0b235a4a592a9316a"
