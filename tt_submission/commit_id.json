@@ -1,7 +1,7 @@
 {
   "app": "flow/package.sh (local harden, flow/README.md)",
-  "repo": "N/A",
-  "commit": "",
+  "repo": "git@github.com:Geometrically/baked-weights.git",
+  "commit": "0a33bcf63605feacca60e59038a93ebcb166d879",
   "dirty": true,
   "workflow_url": "",
   "config": "l2e40mlp2",

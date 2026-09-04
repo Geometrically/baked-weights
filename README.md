@@ -32,3 +32,6 @@ synchronous, so the clock must run for a reset to take effect.
 Apache License 2.0 — see [LICENSE](LICENSE).
 
 The ROM in `macro/` is a derived work of an Apache-2.0 layout by Sylvain Munaut / tnt.
+
+## AI Generated Code + Inspirations
+I had initally hoped to complete this project by hand before the tapeout deadline, but due to some personal stuff that came up, I regrettably did not have time. Much of the code in this repository is AI generated, while the design was made by me. The idea for this chip was heavily inspired by Taalas HC1.
